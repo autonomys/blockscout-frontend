@@ -16,11 +16,21 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
     const stringFields: Array<keyof MetaParsed> = [
       'textColor',
       'bgColor',
+      'tagIcon',
       'tagUrl',
       'tooltipIcon',
       'tooltipTitle',
       'tooltipDescription',
       'tooltipUrl',
+      'appID',
+      'appMarketplaceURL',
+      'appLogoURL',
+      'appActionButtonText',
+      'warpcastHandle',
+      'data',
+      'alertBgColor',
+      'alertTextColor',
+      'alertStatus',
     ];
 
     for (const stringField of stringFields) {

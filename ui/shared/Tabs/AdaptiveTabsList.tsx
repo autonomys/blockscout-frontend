@@ -37,22 +37,24 @@ const AdaptiveTabsList = (props: Props) => {
     return [ ...props.tabs, menuButton ];
   }, [ props.tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabsList, isMobile);
+  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isMobile);
   const isSticky = useIsSticky(listRef, 5, props.stickyEnabled);
-  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile });
+  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile, isLoading: props.isLoading });
 
   return (
     <TabList
-      marginBottom={{ base: 6, lg: 8 }}
-      mx={{ base: '-16px', lg: 'unset' }}
-      px={{ base: '16px', lg: 'unset' }}
+      marginBottom={ 6 }
+      mx={{ base: '-12px', lg: 'unset' }}
+      px={{ base: '12px', lg: 'unset' }}
       flexWrap="nowrap"
+      alignItems="center"
       whiteSpace="nowrap"
       ref={ listRef }
       overflowX={{ base: 'auto', lg: 'initial' }}
       overscrollBehaviorX="contain"
       css={{
         'scroll-snap-type': 'x mandatory',
+        'scroll-padding-inline': '12px', // mobile page padding
         // hide scrollbar
         '&::-webkit-scrollbar': { /* Chromiums */
           display: 'none',
@@ -78,7 +80,8 @@ const AdaptiveTabsList = (props: Props) => {
           props.tabListProps)
       }
     >
-      { tabsList.map((tab, index) => {
+      { props.leftSlot && <Box ref={ leftSlotRef } { ...props.leftSlotProps }> { props.leftSlot } </Box> }
+      { tabsList.slice(0, props.isLoading ? 5 : Infinity).map((tab, index) => {
         if (!tab.id) {
           if (props.isLoading) {
             return null;
@@ -107,7 +110,7 @@ const AdaptiveTabsList = (props: Props) => {
 
         return (
           <Tab
-            key={ tab.id }
+            key={ tab.id.toString() }
             ref={ tabsRefs[index] }
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"
@@ -117,6 +120,7 @@ const AdaptiveTabsList = (props: Props) => {
                 color: 'inherit',
               },
             }}
+            { ...(index === props.activeTabIndex ? { 'data-selected': true } : {}) }
           >
             <Skeleton isLoaded={ !props.isLoading }>
               { typeof tab.title === 'function' ? tab.title() : tab.title }

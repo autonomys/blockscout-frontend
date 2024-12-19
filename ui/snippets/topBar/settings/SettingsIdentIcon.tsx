@@ -3,9 +3,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import { IDENTICONS } from 'lib/settings/identIcon';
 
 import SettingsSample from './SettingsSample';
-import { IDENTICONS } from './utils';
 
 const SettingsIdentIcon = () => {
   const [ activeId, setActiveId ] = React.useState<string>();
@@ -32,7 +32,7 @@ const SettingsIdentIcon = () => {
 
   return (
     <div>
-      <Box fontWeight={ 600 }>Address identicon</Box>
+      <Box fontWeight={ 600 }>Address settings</Box>
       <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeIdenticon?.label }</Box>
       <Flex>
         { IDENTICONS.map((identicon) => (

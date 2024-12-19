@@ -20,7 +20,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -37,7 +37,7 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 type Filters = {
   type: Array<TokenType>;
   filter: AddressFromToFilter | undefined;
-}
+};
 
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
@@ -54,7 +54,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
     }
   }
   if (filters.type && filters.type.length) {
-    if (!filters.type.includes(tokenTransfer.token.type)) {
+    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
       return false;
     }
   }
@@ -65,11 +65,12 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
   // for tests only
   overloadCount?: number;
-}
+};
 
-const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true }: Props) => {
+const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
@@ -95,6 +96,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shou
     filters: tokenFilter ? { token: tokenFilter } : filters,
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: getTokenTransfersStub(undefined, {
         block_number: 7793535,
         index: 46,
@@ -204,7 +206,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shou
           data={ data?.items }
           baseAddress={ currentAddress }
           showTxInfo
-          top={ isActionBarHidden ? 0 : 80 }
+          top={ isActionBarHidden ? 0 : ACTION_BAR_HEIGHT_DESKTOP }
           enableTimeIncrement
           showSocketInfo={ pagination.page === 1 && !tokenFilter }
           socketInfoAlert={ socketAlert }

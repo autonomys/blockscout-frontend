@@ -27,6 +27,8 @@ const TAB_LIST_PROPS = {
   marginTop: -5,
 };
 
+const TABS_HEIGHT = 80;
+
 const ZkSyncL2TxnBatch = () => {
   const router = useRouter();
   const appProps = useAppContext();
@@ -59,10 +61,16 @@ const ZkSyncL2TxnBatch = () => {
   throwOnAbsentParamError(number);
   throwOnResourceLoadError(batchQuery);
 
+  const hasPagination = !isMobile && batchTxsQuery.pagination.isVisible && tab === 'txs';
+
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkSyncL2TxnBatchDetails query={ batchQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false }/> },
-  ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
+    {
+      id: 'txs',
+      title: 'Transactions',
+      component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+    },
+  ].filter(Boolean)), [ batchQuery, batchTxsQuery, hasPagination ]);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/batches');
@@ -72,18 +80,16 @@ const ZkSyncL2TxnBatch = () => {
     }
 
     return {
-      label: 'Back to tx batches list',
+      label: 'Back to txn batches list',
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
-
-  const hasPagination = !isMobile && batchTxsQuery.pagination.isVisible && tab === 'txs';
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Tx batch #${ number }` }
+        title={ `Txn batch #${ number }` }
         backLink={ backLink }
       />
       { batchQuery.isPlaceholderData ?

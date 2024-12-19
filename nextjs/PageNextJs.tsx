@@ -9,7 +9,6 @@ import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel';
-import { init as initSentry } from 'lib/sentry/config';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;
@@ -18,10 +17,8 @@ interface Props<Pathname extends Route['pathname']> {
   apiData?: PageProps<Pathname>['apiData'];
 }
 
-initSentry();
-
 const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) => {
-  const { title, description, opengraph } = metadata.generate(props, props.apiData);
+  const { title, description, opengraph, canonical } = metadata.generate(props, props.apiData);
 
   useGetCsrfToken();
   useAdblockDetect();
@@ -34,6 +31,7 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
       <Head>
         <title>{ title }</title>
         <meta name="description" content={ description }/>
+        { canonical && <link rel="canonical" href={ canonical }/> }
 
         { /* OG TAGS */ }
         <meta property="og:title" content={ opengraph.title }/>

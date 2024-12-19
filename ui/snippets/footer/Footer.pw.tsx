@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Footer from './Footer';
 
@@ -13,7 +13,7 @@ test.describe('with custom links, max cols', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, JSON.stringify(FOOTER_LINKS));
+    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, FOOTER_LINKS);
     await injectMetaMaskProvider();
     await mockApiResponse('homepage_indexing_status', {
       finished_indexing: false,
@@ -30,9 +30,9 @@ test.describe('with custom links, max cols', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async({ page }) => {
+    test('base view', async({ page }) => {
       await expect(page).toHaveScreenshot();
     });
   });
@@ -43,7 +43,7 @@ test.describe('with custom links, min cols', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, JSON.stringify([ FOOTER_LINKS[0] ]));
+    await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, [ FOOTER_LINKS[0] ]);
     await render(<Footer/>);
     await expect(page).toHaveScreenshot();
   });

@@ -7,16 +7,18 @@ interface Props {
   methodId: string;
   methodCall: string;
   isLoading?: boolean;
+  rightSlot?: React.ReactNode;
 }
 
-const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean}) => {
+const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean }) => {
   return (
     <Flex
+      w="100%"
       columnGap={ 5 }
       rowGap={ 2 }
       px={{ base: 0, lg: 4 }}
       flexDir={{ base: 'column', lg: 'row' }}
-      alignItems="flex-start"
+      alignItems={{ base: 'flex-start', lg: 'center' }}
     >
       <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } isLoaded={ !isLoading }>
         { label }
@@ -26,19 +28,24 @@ const Item = ({ label, children, isLoading }: { label: string; children: React.R
   );
 };
 
-const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading }: Props) => {
+const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot }: Props) => {
   return (
     <VStack
       align="flex-start"
       divider={ <Divider/> }
       fontSize="sm"
       lineHeight={ 5 }
+      flexGrow={ 1 }
+      w="100%"
     >
-      <Item label="Method id" isLoading={ isLoading }>
-        <Tag isLoading={ isLoading }>{ methodId }</Tag>
-      </Item>
+      <Flex columnGap={ 2 } w="100%">
+        <Item label="Method id" isLoading={ isLoading }>
+          <Tag isLoading={ isLoading }>{ methodId }</Tag>
+        </Item>
+        { rightSlot }
+      </Flex>
       <Item label="Call" isLoading={ isLoading }>
-        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ methodCall }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap" w="100%">{ methodCall }</Skeleton>
       </Item>
     </VStack>
   );

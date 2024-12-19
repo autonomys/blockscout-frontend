@@ -15,11 +15,13 @@ import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPage
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
 
+const TABS_HEIGHT = 88;
+
 type Props = {
   token?: TokenInfo;
   holdersQuery: QueryWithPagesResult<'token_holders'>;
   shouldRender?: boolean;
-}
+};
 
 const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
@@ -52,7 +54,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ holdersQuery.pagination.isVisible ? 80 : 0 }
+          top={ holdersQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>

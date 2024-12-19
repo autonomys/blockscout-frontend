@@ -1,4 +1,4 @@
-import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance } from 'types/api/address';
+import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance, AddressTokensResponse } from 'types/api/address';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
 import * as tokenInstance from 'mocks/tokens/tokenInstance';
@@ -119,35 +119,39 @@ export const erc404b: AddressTokenBalance = {
   token_id: null,
 };
 
-export const erc20List = {
+export const erc20List: AddressTokensResponse = {
   items: [
     erc20a,
     erc20b,
     erc20c,
   ],
+  next_page_params: null,
 };
 
-export const erc721List = {
+export const erc721List: AddressTokensResponse = {
   items: [
     erc721a,
     erc721b,
     erc721c,
   ],
+  next_page_params: null,
 };
 
-export const erc1155List = {
+export const erc1155List: AddressTokensResponse = {
   items: [
     erc1155withoutName,
     erc1155a,
     erc1155b,
   ],
+  next_page_params: null,
 };
 
-export const erc404List = {
+export const erc404List: AddressTokensResponse = {
   items: [
     erc404a,
     erc404b,
   ],
+  next_page_params: null,
 };
 
 export const nfts: AddressNFTsResponse = {
@@ -180,22 +184,27 @@ const nftInstance = {
   value: '11',
 };
 
+const nftInstanceWithoutImage = {
+  ...nftInstance,
+  image_url: null,
+};
+
 export const collections: AddressCollectionsResponse = {
   items: [
     {
       token: tokens.tokenInfoERC1155a,
       amount: '100',
-      token_instances: Array(5).fill(nftInstance),
+      token_instances: Array(5).fill(nftInstanceWithoutImage),
     },
     {
       token: tokens.tokenInfoERC20LongSymbol,
       amount: '100',
-      token_instances: Array(5).fill(nftInstance),
+      token_instances: Array(5).fill(nftInstanceWithoutImage),
     },
     {
       token: tokens.tokenInfoERC1155WithoutName,
       amount: '1',
-      token_instances: [ nftInstance ],
+      token_instances: [ nftInstanceWithoutImage ],
     },
   ],
   next_page_params: {

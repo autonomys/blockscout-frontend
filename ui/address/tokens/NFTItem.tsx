@@ -6,6 +6,7 @@ import type { AddressNFT } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftMedia from 'ui/shared/nft/NftMedia';
@@ -23,14 +24,14 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
   return (
     <NFTItemContainer position="relative">
       <Skeleton isLoaded={ !isLoading }>
-        <LightMode><Tag background="gray.50" zIndex={ 1 } position="absolute" top="18px" right="18px">{ token.type }</Tag></LightMode>
+        <LightMode><Tag background="gray.50" zIndex={ 1 } position="absolute" top="18px" right="18px">{ getTokenTypeName(token.type) }</Tag></LightMode>
       </Skeleton>
       <Link href={ isLoading ? undefined : tokenInstanceLink }>
         <NftMedia
           mb="18px"
-          animationUrl={ tokenInstance?.animation_url ?? null }
-          imageUrl={ tokenInstance?.image_url ?? null }
+          data={ tokenInstance }
           isLoading={ isLoading }
+          autoplayVideo={ false }
         />
       </Link>
       <Flex justifyContent="space-between" w="100%" flexWrap="wrap">

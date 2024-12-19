@@ -7,6 +7,7 @@ import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -23,7 +24,7 @@ const OptimisticL2Deposits = () => {
           next_page_params: {
             items_count: 50,
             l1_block_number: 9045200,
-            tx_hash: '',
+            transaction_hash: '',
           },
         },
       ),
@@ -41,14 +42,14 @@ const OptimisticL2Deposits = () => {
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
-            key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

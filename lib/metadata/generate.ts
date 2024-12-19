@@ -5,8 +5,10 @@ import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import { currencyUnits } from 'lib/units';
 
 import compileValue from './compileValue';
+import getCanonicalUrl from './getCanonicalUrl';
 import getPageOgType from './getPageOgType';
 import * as templates from './templates';
 
@@ -16,11 +18,11 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     ...apiData,
     network_name: config.chain.name,
     network_title: getNetworkTitle(),
+    network_gwei: currencyUnits.gwei,
   };
 
-  const compiledTitle = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
-  const title = compiledTitle ? compiledTitle + (config.meta.promoteBlockscoutInTitle ? ' | Blockscout' : '') : '';
-  const description = compileValue(templates.description.make(route.pathname), params);
+  const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
+  const description = compileValue(templates.description.make(route.pathname, Boolean(apiData)), params);
 
   const pageOgType = getPageOgType(route.pathname);
 
@@ -32,5 +34,6 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
       description: pageOgType !== 'Regular page' ? config.meta.og.description : '',
       imageUrl: pageOgType !== 'Regular page' ? config.meta.og.imageUrl : '',
     },
+    canonical: getCanonicalUrl(route.pathname),
   };
 }

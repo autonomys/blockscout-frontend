@@ -96,6 +96,15 @@ export const contract1: SearchResultAddressOrContract = {
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
+export const contract2: SearchResultAddressOrContract = {
+  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  name: 'Super utko',
+  type: 'contract' as const,
+  is_smart_contract_verified: true,
+  certified: true,
+  url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+};
+
 export const label1: SearchResultLabel = {
   address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'utko',
@@ -105,7 +114,7 @@ export const label1: SearchResultLabel = {
 };
 
 export const tx1: SearchResultTx = {
-  tx_hash: '0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',
+  transaction_hash: '0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',
   type: 'transaction' as const,
   timestamp: '2022-12-11T17:55:20Z',
   url: '/tx/0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',

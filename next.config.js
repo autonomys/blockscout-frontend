@@ -18,13 +18,7 @@ const moduleExports = {
     'swagger-ui-react',
   ],
   reactStrictMode: true,
-  webpack(config, { webpack }) {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: false,
-        __SENTRY_TRACING__: false,
-      }),
-    );
+  webpack(config) {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -46,14 +40,9 @@ const moduleExports = {
   output: 'standalone',
   productionBrowserSourceMaps: true,
   experimental: {
-    instrumentationHook: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: [ '@svgr/webpack' ],
-          as: '*.js',
-        },
-      },
+    staleTimes: {
+      dynamic: 30,
+      'static': 180,
     },
   },
 };
